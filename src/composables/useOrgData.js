@@ -38,7 +38,7 @@ export function useOrgData() {
     worker.terminate()
   }
 
-  worker.postMessage(import.meta.env.BASE_URL + 'data.csv')
+  worker.postMessage('https://mubarakalipiracha.github.io/giga-corp-org-chart/data.csv')
 
   return { status, error, org, timings }
 }
