@@ -11,8 +11,21 @@ const props = defineProps({
 const viewport = ref(null)
 const content = ref(null)
 const transform = ref({ x: 0, y: 0, k: 1 })
+const easing = ref(false)
 
+const MIN_FIT_SCALE = 0.6
 const clampScale = value => Math.min(2.5, Math.max(0.05, value))
+const zoomPercent = computed(() => Math.round(transform.value.k * 100))
+
+let easeTimer = null
+const withEase = apply => {
+  easing.value = true
+  apply()
+  clearTimeout(easeTimer)
+  easeTimer = setTimeout(() => {
+    easing.value = false
+  }, 320)
+}
 
 // --- pan (drag) ---
 let dragging = false
@@ -36,6 +49,7 @@ const onPointerMove = event => {
     moved = true
     viewport.value.setPointerCapture(event.pointerId)
   }
+  easing.value = false
   transform.value = { ...transform.value, x: start.tx + dx, y: start.ty + dy }
 }
 
@@ -46,6 +60,7 @@ const onPointerUp = () => {
 // --- zoom to cursor (wheel) ---
 const onWheel = event => {
   event.preventDefault()
+  easing.value = false
   const current = transform.value
   const factor = Math.exp(-event.deltaY * 0.0015)
   const k = clampScale(current.k * factor)
@@ -59,7 +74,23 @@ const onWheel = event => {
   }
 }
 
-// --- fit and reset ---
+// --- zoom buttons (around the viewport centre) ---
+const zoomBy = factor => {
+  const current = transform.value
+  const k = clampScale(current.k * factor)
+  const rect = viewport.value.getBoundingClientRect()
+  const cx = rect.width / 2
+  const cy = rect.height / 2
+  withEase(() => {
+    transform.value = {
+      k,
+      x: cx - (k / current.k) * (cx - current.x),
+      y: cy - (k / current.k) * (cy - current.y),
+    }
+  })
+}
+
+// --- fit, reset, centre ---
 const PADDING = 32
 
 const fit = () => {
@@ -68,25 +99,38 @@ const fit = () => {
   const width = content.value.offsetWidth
   const height = content.value.offsetHeight
   if (width === 0 || height === 0) return
-  const k = clampScale(Math.min(
+  const k = Math.min(
     (viewportRect.width - PADDING) / width,
     (viewportRect.height - PADDING) / height,
     1.25,
-  ))
-  transform.value = {
-    k,
-    x: (viewportRect.width - width * k) / 2,
-    y: Math.max((viewportRect.height - height * k) / 2, PADDING / 2),
+  )
+  if (k < MIN_FIT_SCALE) {
+    // Too much tree for one screen: don't shrink into confetti — hold 0.6 and
+    // centre on the selected person (or the root) instead.
+    withEase(() => {
+      transform.value = { ...transform.value, k: MIN_FIT_SCALE }
+    })
+    centerOn(props.state.selectedId.value || props.org.rootId)
+    return
   }
+  withEase(() => {
+    transform.value = {
+      k,
+      x: (viewportRect.width - width * k) / 2,
+      y: Math.max((viewportRect.height - height * k) / 2, PADDING / 2),
+    }
+  })
 }
 
 const reset = () => {
   const viewportRect = viewport.value.getBoundingClientRect()
-  transform.value = {
-    k: 1,
-    x: (viewportRect.width - content.value.offsetWidth) / 2,
-    y: PADDING / 2,
-  }
+  withEase(() => {
+    transform.value = {
+      k: 1,
+      x: (viewportRect.width - content.value.offsetWidth) / 2,
+      y: PADDING / 2,
+    }
+  })
 }
 
 const centerOn = async id => {
@@ -96,11 +140,13 @@ const centerOn = async id => {
   const viewportRect = viewport.value.getBoundingClientRect()
   const cardRect = card.getBoundingClientRect()
   const current = transform.value
-  transform.value = {
-    ...current,
-    x: current.x + viewportRect.left + viewportRect.width / 2 - (cardRect.left + cardRect.width / 2),
-    y: current.y + viewportRect.top + viewportRect.height / 3 - (cardRect.top + cardRect.height / 2),
-  }
+  withEase(() => {
+    transform.value = {
+      ...current,
+      x: current.x + viewportRect.left + viewportRect.width / 2 - (cardRect.left + cardRect.width / 2),
+      y: current.y + viewportRect.top + viewportRect.height / 3 - (cardRect.top + cardRect.height / 2),
+    }
+  })
 }
 
 defineExpose({ centerOn, fit, reset })
@@ -154,17 +200,44 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   if (viewport.value) viewport.value.removeEventListener('wheel', onWheel)
+  clearTimeout(easeTimer)
 })
 </script>
 
 <template>
-  <div class="canvas-dots relative flex-1 overflow-hidden bg-slate-50">
-    <div class="absolute left-4 top-4 z-10 flex flex-wrap gap-2">
-      <button type="button" class="toolbar-btn" @click="fit">Fit</button>
-      <button type="button" class="toolbar-btn" @click="reset">Reset</button>
+  <div class="canvas-dots relative flex-1 overflow-hidden bg-canvas">
+    <div class="absolute left-4 top-4 z-10 flex flex-wrap items-center gap-2">
       <button type="button" class="toolbar-btn" :title="'Expands one more level under ' + (state.selectedId.value ? 'the selected person' : 'the CEO')" @click="expandLevel">Expand level</button>
       <button type="button" class="toolbar-btn" @click="collapseAll">Collapse all</button>
-      <span class="self-center rounded-full bg-white/80 px-2.5 py-1 text-[11px] text-slate-500 shadow-sm">{{ visibleCount.toLocaleString() }} cards</span>
+      <span class="rounded-full border border-line bg-surface/90 px-2.5 py-1 text-xs text-ink-muted">{{ visibleCount.toLocaleString() }} cards</span>
+    </div>
+
+    <div class="absolute bottom-4 left-4 z-10 flex items-center overflow-hidden rounded-full border border-line bg-surface/95 shadow-card">
+      <button
+        type="button"
+        class="px-2.5 py-1.5 text-sm text-ink-secondary transition-colors duration-[120ms] hover:bg-canvas hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        aria-label="Zoom out"
+        @click="zoomBy(1 / 1.25)"
+      >−</button>
+      <span class="w-12 text-center text-xs font-medium text-ink-secondary" aria-live="polite">{{ zoomPercent }}%</span>
+      <button
+        type="button"
+        class="px-2.5 py-1.5 text-sm text-ink-secondary transition-colors duration-[120ms] hover:bg-canvas hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        aria-label="Zoom in"
+        @click="zoomBy(1.25)"
+      >+</button>
+      <span class="h-5 w-px bg-line" aria-hidden="true"></span>
+      <button
+        type="button"
+        class="px-3 py-1.5 text-xs font-medium text-ink-secondary transition-colors duration-[120ms] hover:bg-canvas hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        @click="fit"
+      >Fit</button>
+      <span class="h-5 w-px bg-line" aria-hidden="true"></span>
+      <button
+        type="button"
+        class="px-3 py-1.5 text-xs font-medium text-ink-secondary transition-colors duration-[120ms] hover:bg-canvas hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        @click="reset"
+      >Reset</button>
     </div>
 
     <div
@@ -178,6 +251,7 @@ onBeforeUnmount(() => {
       <div
         ref="content"
         class="w-max origin-top-left pb-10 pt-6"
+        :class="easing ? 'camera-ease' : ''"
         :style="{ transform: 'translate(' + transform.x + 'px,' + transform.y + 'px) scale(' + transform.k + ')' }"
       >
         <OrgNode :id="org.rootId" />

@@ -3,10 +3,9 @@
 // layer and the dev card-count assertion both rely on.
 
 export function initialExpandedIds(nodes, rootId) {
-  const root = nodes.get(rootId)
-  if (!root) return new Set()
-  // Root + level 2 expanded: the root's children also show THEIR children.
-  return new Set([rootId, ...root.childIds])
+  if (!nodes.get(rootId)) return new Set()
+  // Only the root starts expanded: the default view is the CEO + level 2.
+  return new Set([rootId])
 }
 
 export function visibleNodeIds(nodes, expandedIds, rootId) {

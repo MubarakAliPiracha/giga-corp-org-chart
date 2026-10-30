@@ -24,12 +24,12 @@ describe('visibility on a hand-built tree', () => {
     expect(visibleNodeIds(nodes, new Set(), 'r')).toEqual(['r'])
   })
 
-  it('initial state is root + level 2 expanded', () => {
+  it('initial state shows the root and level 2 only', () => {
     const expanded = initialExpandedIds(nodes, 'r')
-    expect(expanded).toEqual(new Set(['r', 'a', 'b']))
+    expect(expanded).toEqual(new Set(['r']))
     const visible = visibleNodeIds(nodes, expanded, 'r')
-    // r, a, b visible; a is expanded so c and d are visible; e is not.
-    expect(new Set(visible)).toEqual(new Set(['r', 'a', 'b', 'c', 'd']))
+    // r is expanded so a and b are visible; nothing deeper is.
+    expect(new Set(visible)).toEqual(new Set(['r', 'a', 'b']))
   })
 
   it('never shows a node whose ancestor is collapsed, even if it is expanded', () => {
@@ -71,8 +71,7 @@ describe('visibility on the real dataset', () => {
     const expanded = initialExpandedIds(nodes, rootId)
     const visible = visibleNodeIds(nodes, expanded, rootId)
     const level2 = nodes.get(rootId).childIds
-    const level3Count = level2.reduce((sum, id) => sum + nodes.get(id).childIds.length, 0)
-    expect(visible.length).toBe(1 + level2.length + level3Count)
+    expect(visible.length).toBe(1 + level2.length)
     expect(visible.length).toBeLessThan(100)
     expect(visible.length).not.toBe(40000)
   })

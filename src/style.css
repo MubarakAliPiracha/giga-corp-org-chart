@@ -1,7 +1,32 @@
 @import "tailwindcss";
 
+/* ---------------------------------------------------------------------------
+   Design tokens. Every colour, radius and shadow in the app comes from here.
+   Tailwind v4 turns each --color-* into utilities (bg-canvas, text-ink, ...).
+--------------------------------------------------------------------------- */
 @theme {
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Geist', 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  --color-canvas: #F7F7F5;
+  --color-surface: #FFFFFF;
+  --color-line: #E8E6E1;
+  --color-line-strong: #D6D3CD;
+
+  --color-ink: #1A1A19;
+  --color-ink-secondary: #5F5E5A;
+  --color-ink-muted: #8F8D88;
+
+  --color-accent: #4F46E5;
+
+  --radius-card: 12px;
+  --radius-control: 8px;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-lift: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+body {
+  font-variant-numeric: tabular-nums;
 }
 
 /* Respect users who turn off animation at the OS level */
@@ -17,11 +42,14 @@
 
 /* Subtle dot grid so the pan/zoom area reads as a canvas */
 .canvas-dots {
-  background-image: radial-gradient(circle, #cbd5e1 1px, transparent 1px);
+  background-image: radial-gradient(circle, #e4e2dd 1px, transparent 1px);
   background-size: 18px 18px;
 }
 
-/* Org tree connector lines */
+/* ---------------------------------------------------------------------------
+   Org tree connectors: right-angle elbows, 1.5px, rounded 6px corners at the
+   outermost children. Middle children get a straight rail + straight drop.
+--------------------------------------------------------------------------- */
 .tree-node {
   display: flex;
   flex-direction: column;
@@ -29,9 +57,9 @@
 }
 
 .tree-stem {
-  width: 1px;
+  width: 1.5px;
   height: 1.25rem;
-  background: #cbd5e1;
+  background: var(--color-line-strong);
 }
 
 .tree-children {
@@ -47,15 +75,15 @@
   padding: 1.75rem 0.625rem 0;
 }
 
-/* vertical drop into each child card */
+/* vertical drop into each middle child */
 .tree-child::before {
   content: '';
   position: absolute;
   top: 0;
   left: 50%;
-  width: 1px;
+  width: 1.5px;
   height: 1.75rem;
-  background: #cbd5e1;
+  background: var(--color-line-strong);
 }
 
 /* horizontal rail across siblings */
@@ -65,28 +93,113 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 1px;
-  background: #cbd5e1;
+  height: 1.5px;
+  background: var(--color-line-strong);
 }
 
-.tree-child:first-child::after { left: 50%; }
-.tree-child:last-child::after { right: 50%; }
-.tree-child:only-child::after { display: none; }
+/* First/last child: replace drop + rail with one rounded elbow box */
+.tree-child:first-child:not(:only-child)::before {
+  left: 50%;
+  right: -0.625rem;
+  width: auto;
+  height: 1.75rem;
+  background: none;
+  border-left: 1.5px solid var(--color-line-strong);
+  border-top: 1.5px solid var(--color-line-strong);
+  border-top-left-radius: 6px;
+}
+
+.tree-child:last-child:not(:only-child)::before {
+  left: -0.625rem;
+  right: 50%;
+  width: auto;
+  height: 1.75rem;
+  background: none;
+  border-right: 1.5px solid var(--color-line-strong);
+  border-top: 1.5px solid var(--color-line-strong);
+  border-top-right-radius: 6px;
+}
+
+.tree-child:first-child::after,
+.tree-child:last-child::after {
+  display: none;
+}
+
+.tree-child:only-child::after {
+  display: none;
+}
+
+/* ---------------------------------------------------------------------------
+   Motion. All of it is killed by the prefers-reduced-motion block above.
+--------------------------------------------------------------------------- */
+
+/* expanding a node: children fade in and slide down 8px */
+.kids-enter-active {
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+.kids-enter-from {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+/* programmatic camera moves ease; drag/wheel stays immediate */
+.camera-ease {
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* detail panel slides in (from right on desktop, from bottom on mobile) */
+.panel-enter-active,
+.panel-leave-active {
+  transition: transform 200ms ease, opacity 200ms ease;
+}
+.panel-enter-from,
+.panel-leave-to {
+  opacity: 0;
+  transform: translateY(100%);
+}
+@media (min-width: 768px) {
+  .panel-enter-from,
+  .panel-leave-to {
+    transform: translateX(100%);
+  }
+}
+
+/* loading skeleton shimmer */
+.skeleton {
+  background: #efede8;
+  border-radius: var(--radius-card);
+  position: relative;
+  overflow: hidden;
+}
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  animation: shimmer 1.6s infinite;
+}
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
 
 .toolbar-btn {
-  border-radius: 0.5rem;
-  border: 1px solid #e2e8f0;
-  background: rgba(255, 255, 255, 0.9);
+  border-radius: var(--radius-control);
+  border: 1px solid var(--color-line);
+  background: rgba(255, 255, 255, 0.92);
   padding: 0.3rem 0.75rem;
-  font-size: 0.75rem;
+  font-size: 12px;
   font-weight: 500;
-  color: #334155;
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+  color: var(--color-ink-secondary);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
 }
 
-.toolbar-btn:hover { background: #f1f5f9; }
+.toolbar-btn:hover {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+}
 
 .toolbar-btn:focus-visible {
-  outline: 2px solid #475569;
+  outline: 2px solid var(--color-accent);
   outline-offset: 1px;
 }

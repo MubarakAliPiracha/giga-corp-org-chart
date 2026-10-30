@@ -7,11 +7,15 @@ const props = defineProps({
   state: { type: Object, required: true },
 })
 
+const select = id => {
+  props.state.selectedId.value = props.state.selectedId.value === id ? null : id
+}
+
 provide('orgChart', {
   nodes: props.org.nodes,
   isExpanded: props.state.isExpanded,
   toggle: props.state.toggle,
-  select: () => {},
+  select,
   selectedId: props.state.selectedId,
   highlightedId: props.state.highlightedId,
 })

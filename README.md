@@ -18,10 +18,13 @@ npm run build && npm run preview
 
 ## What each node shows
 
-Direct reports / descendants (the badge), non-leaf descendants ("managers
-below"), management cost, IC cost, total cost, and management cost ratio.
+Cards stay scannable: name, title, department, total cost and management cost
+ratio, plus the direct reports / descendants badge. Clicking a card opens a
+detail panel (bottom sheet on mobile) with the full-precision metrics —
+management cost, IC cost, total cost, ratio with its definition, non-leaf
+descendants ("managers below") — and a clickable reporting-chain breadcrumb.
 All metrics are over a node's **descendants — the node itself is excluded**:
-a leaf has zero descendants, so leaf cards show the person's own salary
+a leaf has zero descendants, so leaves show the person's own salary
 instead of six zeros.
 
 ## The algorithm (the part being graded)

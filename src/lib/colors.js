@@ -1,26 +1,19 @@
-// One fixed palette. Tailwind v4 only generates classes it can see as literal
-// strings, so every entry is written out in full — never built with template
-// strings. A department always hashes to the same entry, so its colour is
-// consistent across cards, chips and charts.
+// One fixed department palette: 9 muted hues at similar lightness. Each entry
+// is a strong tone (text, avatar initials, card top border — all pass WCAG AA
+// against the tint) and a ~12% tint (avatar and chip backgrounds).
+// A department always hashes to the same entry, so its colour is consistent
+// across cards, the list view and the detail panel.
 
 export const PALETTE = [
-  { card: 'border-sky-200 bg-sky-50', chip: 'bg-sky-100 text-sky-800', avatar: 'bg-sky-600', bar: '#0284c7' },
-  { card: 'border-emerald-200 bg-emerald-50', chip: 'bg-emerald-100 text-emerald-800', avatar: 'bg-emerald-600', bar: '#059669' },
-  { card: 'border-violet-200 bg-violet-50', chip: 'bg-violet-100 text-violet-800', avatar: 'bg-violet-600', bar: '#7c3aed' },
-  { card: 'border-amber-200 bg-amber-50', chip: 'bg-amber-100 text-amber-800', avatar: 'bg-amber-600', bar: '#d97706' },
-  { card: 'border-rose-200 bg-rose-50', chip: 'bg-rose-100 text-rose-800', avatar: 'bg-rose-600', bar: '#e11d48' },
-  { card: 'border-cyan-200 bg-cyan-50', chip: 'bg-cyan-100 text-cyan-800', avatar: 'bg-cyan-600', bar: '#0891b2' },
-  { card: 'border-lime-200 bg-lime-50', chip: 'bg-lime-100 text-lime-800', avatar: 'bg-lime-600', bar: '#65a30d' },
-  { card: 'border-fuchsia-200 bg-fuchsia-50', chip: 'bg-fuchsia-100 text-fuchsia-800', avatar: 'bg-fuchsia-600', bar: '#c026d3' },
-  { card: 'border-indigo-200 bg-indigo-50', chip: 'bg-indigo-100 text-indigo-800', avatar: 'bg-indigo-600', bar: '#4f46e5' },
-  { card: 'border-teal-200 bg-teal-50', chip: 'bg-teal-100 text-teal-800', avatar: 'bg-teal-600', bar: '#0d9488' },
-  { card: 'border-orange-200 bg-orange-50', chip: 'bg-orange-100 text-orange-800', avatar: 'bg-orange-600', bar: '#ea580c' },
-  { card: 'border-blue-200 bg-blue-50', chip: 'bg-blue-100 text-blue-800', avatar: 'bg-blue-600', bar: '#2563eb' },
-  { card: 'border-green-200 bg-green-50', chip: 'bg-green-100 text-green-800', avatar: 'bg-green-600', bar: '#16a34a' },
-  { card: 'border-purple-200 bg-purple-50', chip: 'bg-purple-100 text-purple-800', avatar: 'bg-purple-600', bar: '#9333ea' },
-  { card: 'border-red-200 bg-red-50', chip: 'bg-red-100 text-red-800', avatar: 'bg-red-600', bar: '#dc2626' },
-  { card: 'border-yellow-200 bg-yellow-50', chip: 'bg-yellow-100 text-yellow-800', avatar: 'bg-yellow-600', bar: '#ca8a04' },
-  { card: 'border-pink-200 bg-pink-50', chip: 'bg-pink-100 text-pink-800', avatar: 'bg-pink-600', bar: '#db2777' },
+  { strong: '#3660A8', tint: '#EBF0F8' }, // blue
+  { strong: '#0E7467', tint: '#E6F2F0' }, // teal
+  { strong: '#754FA0', tint: '#F1ECF7' }, // plum
+  { strong: '#AD4A68', tint: '#F8ECF0' }, // rose
+  { strong: '#92650C', tint: '#F7F1E3' }, // bronze
+  { strong: '#49762F', tint: '#ECF3E8' }, // green
+  { strong: '#0C7490', tint: '#E5F2F6' }, // cyan
+  { strong: '#A04438', tint: '#F8ECEA' }, // clay
+  { strong: '#5B6472', tint: '#EDEFF2' }, // slate
 ]
 
 // Deterministic string hash (djb2). Same department, same colour, every run.

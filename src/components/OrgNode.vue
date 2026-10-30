@@ -23,13 +23,15 @@ const showChildren = computed(() => expanded.value && node.value.childIds.length
       @toggle="chart.toggle"
       @select="chart.select"
     />
-    <template v-if="showChildren">
-      <div class="tree-stem" aria-hidden="true"></div>
-      <div class="tree-children">
-        <div v-for="childId in node.childIds" :key="childId" class="tree-child">
-          <OrgNode :id="childId" />
+    <Transition name="kids">
+      <div v-if="showChildren" class="flex flex-col items-center">
+        <div class="tree-stem" aria-hidden="true"></div>
+        <div class="tree-children">
+          <div v-for="childId in node.childIds" :key="childId" class="tree-child">
+            <OrgNode :id="childId" />
+          </div>
         </div>
       </div>
-    </template>
+    </Transition>
   </div>
 </template>
