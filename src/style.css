@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+/* Org tree connector lines */
+.tree-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tree-stem {
+  width: 1px;
+  height: 1.25rem;
+  background: #cbd5e1;
+}
+
+.tree-children {
+  display: flex;
+  align-items: flex-start;
+}
+
+.tree-child {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.75rem 0.625rem 0;
+}
+
+/* vertical drop into each child card */
+.tree-child::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 1.75rem;
+  background: #cbd5e1;
+}
+
+/* horizontal rail across siblings */
+.tree-child::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #cbd5e1;
+}
+
+.tree-child:first-child::after { left: 50%; }
+.tree-child:last-child::after { right: 50%; }
+.tree-child:only-child::after { display: none; }
+
+.toolbar-btn {
+  border-radius: 0.5rem;
+  border: 1px solid #e2e8f0;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 0.3rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #334155;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+}
+
+.toolbar-btn:hover { background: #f1f5f9; }
+
+.toolbar-btn:focus-visible {
+  outline: 2px solid #475569;
+  outline-offset: 1px;
+}

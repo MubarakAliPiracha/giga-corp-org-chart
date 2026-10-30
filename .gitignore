@@ -1,0 +1,5 @@
+node_modules/
+dist/
+*.log
+# raw upload kept locally; the app reads public/data.csv
+data data.csv
