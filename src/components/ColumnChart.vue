@@ -27,7 +27,7 @@ const long = value => (props.format === 'money' ? moneyFull(value) : count(value
       <div
         v-for="row in rows"
         :key="row.label"
-        class="flex h-full w-full max-w-10 flex-col items-center justify-end"
+        class="flex h-full w-full max-w-10 flex-col items-center justify-end rounded transition-colors hover:bg-slate-50"
         :title="props.xLabel + ' ' + row.label + ': ' + long(row.value)"
       >
         <span class="mb-0.5 text-[10px] font-medium tabular-nums text-slate-600">{{ short(row.value) }}</span>
@@ -40,16 +40,16 @@ const long = value => (props.format === 'money' ? moneyFull(value) : count(value
     <div class="mt-1 flex justify-around gap-2 border-t border-slate-100 pt-1">
       <span v-for="row in rows" :key="row.label" class="w-full max-w-10 text-center text-[10px] text-slate-500">{{ row.label }}</span>
     </div>
-    <p v-if="xLabel" class="mt-0.5 text-center text-[10px] text-slate-400">{{ xLabel }}</p>
+    <p v-if="xLabel" class="mt-0.5 text-center text-[10px] text-slate-500">{{ xLabel }}</p>
 
     <p v-if="takeaway" class="mt-2 text-[11px] text-slate-500">{{ takeaway }}</p>
-    <p v-if="note" class="mt-1 text-[10px] italic text-slate-400">{{ note }}</p>
+    <p v-if="note" class="mt-1 text-[10px] italic text-slate-500">{{ note }}</p>
 
     <details class="mt-2">
-      <summary class="cursor-pointer text-[10px] text-slate-400 hover:text-slate-600">Data table</summary>
+      <summary class="cursor-pointer text-[10px] text-slate-500 hover:text-slate-600">Data table</summary>
       <table class="mt-1 w-full text-left text-[11px]">
         <tbody>
-          <tr v-for="row in rows" :key="row.label" class="border-t border-slate-100 text-slate-600">
+          <tr v-for="row in rows" :key="row.label" class="border-t border-slate-100 text-slate-600 hover:bg-slate-50">
             <td class="py-0.5">{{ xLabel }} {{ row.label }}</td>
             <td class="py-0.5 text-right tabular-nums">{{ long(row.value) }}</td>
           </tr>

@@ -57,7 +57,7 @@ const theme = computed(() => themeFor(person.value.department))
         <p class="text-xs font-semibold tabular-nums text-slate-800">
           {{ isManager ? money(metrics.totalCost) : money(person.salary) }}
         </p>
-        <p v-if="isManager" class="text-[10px] tabular-nums text-slate-400">
+        <p v-if="isManager" class="text-[10px] tabular-nums text-slate-500">
           {{ metrics.directReports }} / {{ count(metrics.descendants) }} · {{ count(metrics.nonLeafDescendants) }} mgrs
         </p>
       </div>

@@ -108,7 +108,7 @@ const tiles = computed(() => [
     <div class="mx-auto grid max-w-6xl gap-4">
       <div class="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <div v-for="tile in tiles" :key="tile.label" class="rounded-xl border border-slate-200 bg-white p-4" :title="tile.hint">
-          <p class="text-[10px] font-medium uppercase tracking-wider text-slate-400">{{ tile.label }}</p>
+          <p class="text-[10px] font-medium uppercase tracking-wider text-slate-500">{{ tile.label }}</p>
           <p class="mt-1.5 text-2xl font-semibold tabular-nums text-slate-900">{{ tile.value }}</p>
         </div>
       </div>

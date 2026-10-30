@@ -39,7 +39,7 @@ const rowTitle = row =>
       <div
         v-for="row in rows"
         :key="row.label"
-        class="grid grid-cols-[9rem_1fr_3.5rem] items-center gap-2"
+        class="-mx-1 grid grid-cols-[9rem_1fr_3.5rem] items-center gap-2 rounded px-1 py-px transition-colors hover:bg-slate-50"
         :title="rowTitle(row)"
       >
         <span class="truncate text-[11px] text-slate-600" :title="row.label">{{ row.label }}</span>
@@ -56,19 +56,19 @@ const rowTitle = row =>
     </div>
 
     <p v-if="takeaway" class="mt-3 text-[11px] text-slate-500">{{ takeaway }}</p>
-    <p v-if="note" class="mt-1 text-[10px] italic text-slate-400">{{ note }}</p>
+    <p v-if="note" class="mt-1 text-[10px] italic text-slate-500">{{ note }}</p>
 
     <details class="mt-2">
-      <summary class="cursor-pointer text-[10px] text-slate-400 hover:text-slate-600">Data table</summary>
+      <summary class="cursor-pointer text-[10px] text-slate-500 hover:text-slate-600">Data table</summary>
       <table class="mt-1 w-full text-left text-[11px]">
         <thead>
-          <tr class="text-slate-400">
+          <tr class="text-slate-500">
             <th class="py-0.5 font-normal">Label</th>
             <th v-for="entry in series" :key="entry.name" class="py-0.5 text-right font-normal">{{ entry.name }}</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="row in rows" :key="row.label" class="border-t border-slate-100 text-slate-600">
+          <tr v-for="row in rows" :key="row.label" class="border-t border-slate-100 text-slate-600 hover:bg-slate-50">
             <td class="py-0.5">{{ row.label }}</td>
             <td v-for="(entry, index) in series" :key="entry.name" class="py-0.5 text-right tabular-nums">
               {{ long(row.values[index] || 0) }}

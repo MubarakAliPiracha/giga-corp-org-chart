@@ -45,7 +45,7 @@ const ratioTitle = computed(() =>
     <div class="px-3 pb-3 text-center">
       <h3 class="truncate text-sm font-semibold text-slate-900" :title="person.name">{{ person.name }}</h3>
       <p class="truncate text-xs text-slate-500" :title="person.title">{{ person.title }}</p>
-      <p class="mt-0.5 text-[10px] text-slate-400">{{ stripEmoji(person.performance) }}</p>
+      <p class="mt-0.5 text-[10px] text-slate-500">{{ stripEmoji(person.performance) }}</p>
 
       <div class="mt-2 flex flex-wrap justify-center gap-1">
         <span class="rounded-full px-2 py-0.5 text-[10px] font-medium" :class="theme.chip">{{ person.department }}</span>

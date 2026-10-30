@@ -49,7 +49,7 @@ onBeforeUnmount(() => clearTimeout(debounceTimer))
       type="search"
       placeholder="Search name, title or id…"
       aria-label="Search people by name, title or employee id"
-      class="w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm shadow-sm placeholder:text-slate-400 focus:border-slate-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+      class="w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm shadow-sm placeholder:text-slate-500 focus:border-slate-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
       @keydown="onKeydown"
       @focus="open = results.length > 0"
     />
