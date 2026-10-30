@@ -107,22 +107,22 @@ const tiles = computed(() => [
   <div class="flex-1 overflow-y-auto overscroll-contain p-4">
     <div class="mx-auto grid max-w-6xl gap-4">
       <div class="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <div v-for="tile in tiles" :key="tile.label" class="rounded-xl border border-slate-200 bg-white p-3" :title="tile.hint">
-          <p class="text-[11px] text-slate-500">{{ tile.label }}</p>
-          <p class="mt-1 text-xl font-semibold tabular-nums text-slate-900">{{ tile.value }}</p>
+        <div v-for="tile in tiles" :key="tile.label" class="rounded-xl border border-slate-200 bg-white p-4" :title="tile.hint">
+          <p class="text-[10px] font-medium uppercase tracking-wider text-slate-400">{{ tile.label }}</p>
+          <p class="mt-1.5 text-2xl font-semibold tabular-nums text-slate-900">{{ tile.value }}</p>
         </div>
       </div>
 
       <div class="rounded-xl border border-slate-200 bg-white p-4">
         <div class="flex flex-wrap items-center gap-2">
           <h2 class="mr-auto text-sm font-semibold text-slate-800">Cost by</h2>
-          <div class="flex rounded-lg border border-slate-200 p-0.5" role="group" aria-label="Group costs by">
+          <div class="flex rounded-lg bg-slate-100 p-0.5" role="group" aria-label="Group costs by">
             <button
               v-for="entry in DIMENSIONS"
               :key="entry.key"
               type="button"
-              class="rounded-md px-2.5 py-1 text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
-              :class="dimension === entry.key ? 'bg-slate-800 text-white' : 'text-slate-600 hover:bg-slate-100'"
+              class="rounded-md px-2.5 py-1 text-xs font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+              :class="dimension === entry.key ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'"
               :aria-pressed="dimension === entry.key"
               @click="dimension = entry.key"
             >{{ entry.label }}</button>

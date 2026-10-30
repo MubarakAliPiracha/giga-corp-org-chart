@@ -32,7 +32,7 @@ const long = value => (props.format === 'money' ? moneyFull(value) : count(value
       >
         <span class="mb-0.5 text-[10px] font-medium tabular-nums text-slate-600">{{ short(row.value) }}</span>
         <span
-          class="w-full rounded-t"
+          class="w-full rounded-t-[3px]"
           :style="{ height: Math.max((row.value / max) * 100, 1) + '%', background: color }"
         ></span>
       </div>

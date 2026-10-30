@@ -158,7 +158,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="relative flex-1 overflow-hidden">
+  <div class="canvas-dots relative flex-1 overflow-hidden bg-slate-50">
     <div class="absolute left-4 top-4 z-10 flex flex-wrap gap-2">
       <button type="button" class="toolbar-btn" @click="fit">Fit</button>
       <button type="button" class="toolbar-btn" @click="reset">Reset</button>

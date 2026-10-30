@@ -43,11 +43,11 @@ const rowTitle = row =>
         :title="rowTitle(row)"
       >
         <span class="truncate text-[11px] text-slate-600" :title="row.label">{{ row.label }}</span>
-        <span class="flex h-3.5 items-center gap-[2px]">
+        <span class="flex h-3.5 items-center gap-px overflow-hidden rounded-[3px] bg-slate-100">
           <span
             v-for="(value, index) in row.values"
             :key="index"
-            class="h-full first:rounded-l-[1px] last:rounded-r"
+            class="h-full"
             :style="{ width: (value / max) * 100 + '%', background: series[index].color }"
           ></span>
         </span>

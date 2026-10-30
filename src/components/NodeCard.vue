@@ -28,7 +28,7 @@ const ratioTitle = computed(() =>
   <article
     data-card
     :data-node-id="node.person.id"
-    class="relative w-60 rounded-xl border bg-white pt-7 shadow-sm transition-shadow"
+    class="relative w-60 cursor-pointer rounded-xl border bg-white pt-7 shadow-sm transition-shadow hover:shadow-md"
     :class="[
       theme.card,
       selected ? 'ring-2 ring-slate-700' : '',
@@ -37,7 +37,7 @@ const ratioTitle = computed(() =>
     @click="emit('select', node.person.id)"
   >
     <span
-      class="absolute -top-5 left-1/2 flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full text-sm font-semibold text-white shadow"
+      class="absolute -top-5 left-1/2 flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full text-sm font-semibold text-white shadow ring-4 ring-white"
       :class="theme.avatar"
       aria-hidden="true"
     >{{ initials(person.name) }}</span>
@@ -49,11 +49,11 @@ const ratioTitle = computed(() =>
 
       <div class="mt-2 flex flex-wrap justify-center gap-1">
         <span class="rounded-full px-2 py-0.5 text-[10px] font-medium" :class="theme.chip">{{ person.department }}</span>
-        <span class="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] text-slate-600">📍 {{ person.location }}</span>
+        <span class="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] text-slate-600">{{ person.location }}</span>
         <span class="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] text-slate-600">Level {{ person.level }}</span>
       </div>
 
-      <dl v-if="isManager" class="mt-2 space-y-0.5 text-left text-[11px]">
+      <dl v-if="isManager" class="mt-2.5 space-y-1 border-t border-slate-900/10 pt-2 text-left text-[11px]">
         <div class="flex justify-between gap-2" :title="moneyFull(metrics.managementCost)">
           <dt class="text-slate-500">Management cost</dt>
           <dd class="font-medium tabular-nums text-slate-800">{{ money(metrics.managementCost) }}</dd>
@@ -76,7 +76,7 @@ const ratioTitle = computed(() =>
         </div>
       </dl>
 
-      <dl v-else class="mt-2 text-left text-[11px]">
+      <dl v-else class="mt-2.5 border-t border-slate-900/10 pt-2 text-left text-[11px]">
         <div class="flex justify-between gap-2" :title="moneyFull(person.salary)">
           <dt class="text-slate-500">Salary</dt>
           <dd class="font-medium tabular-nums text-slate-800">{{ money(person.salary) }}</dd>

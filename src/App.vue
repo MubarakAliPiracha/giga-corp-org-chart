@@ -41,6 +41,14 @@ const revealPerson = id => {
 <template>
   <div class="flex h-screen flex-col overflow-hidden bg-slate-50 text-slate-800">
     <header v-if="status === 'ready'" class="flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-slate-200 bg-white px-4 py-3">
+      <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-900 text-white" aria-hidden="true">
+        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="7" y="2" width="6" height="5" rx="1.5" />
+          <rect x="1.5" y="13" width="6" height="5" rx="1.5" />
+          <rect x="12.5" y="13" width="6" height="5" rx="1.5" />
+          <path d="M10 7v3M10 10H4.5v3M10 10h5.5v3" />
+        </svg>
+      </div>
       <div class="min-w-0">
         <h1 class="text-lg font-semibold tracking-tight">Giga Corp · Org chart</h1>
         <p class="text-[11px] text-slate-500">
@@ -51,18 +59,18 @@ const revealPerson = id => {
           (parse {{ Math.round(timings.parseMs) }} · tree {{ Math.round(timings.buildMs) }} · metrics {{ Math.round(timings.computeMs) }})
         </p>
       </div>
-      <nav class="flex rounded-lg border border-slate-200 p-0.5" aria-label="Views">
+      <nav class="flex rounded-lg bg-slate-100 p-0.5" aria-label="Views">
         <button
           type="button"
-          class="rounded-md px-3 py-1 text-xs font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
-          :class="activeTab === 'chart' ? 'bg-slate-800 text-white' : 'text-slate-600 hover:bg-slate-100'"
+          class="rounded-md px-3 py-1 text-xs font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+          :class="activeTab === 'chart' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'"
           :aria-pressed="activeTab === 'chart'"
           @click="activeTab = 'chart'"
         >Org chart</button>
         <button
           type="button"
-          class="rounded-md px-3 py-1 text-xs font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
-          :class="activeTab === 'analytics' ? 'bg-slate-800 text-white' : 'text-slate-600 hover:bg-slate-100'"
+          class="rounded-md px-3 py-1 text-xs font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+          :class="activeTab === 'analytics' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'"
           :aria-pressed="activeTab === 'analytics'"
           @click="activeTab = 'analytics'"
         >Cost analytics</button>
