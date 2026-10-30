@@ -5,6 +5,8 @@ lines, per-node cost metrics, search-to-person, a responsive list layout for
 narrow screens, and a cost-analytics view. Vue 3 + Vite + Tailwind, no chart
 library, no state library.
 
+**Live demo:** https://mubarakalipiracha.github.io/giga-corp-org-chart/
+
 ## Run it
 
 ```
